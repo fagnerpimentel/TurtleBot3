@@ -1,0 +1,37 @@
+version: '2'
+
+services:
+  
+  xserver:
+    image: devrt/xserver
+    ipc: host
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      - DISPLAY=:9
+    ports:
+      - "3000:80"
+
+  ros-master:
+    # image: turtlebot3:latest
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ipc: host
+    # volumes:
+    #   - ./src:/turtlebot3_ws/src:rw
+    depends_on:
+      - xserver
+    volumes_from:
+      - xserver
+    environment:  
+      - ROS_MASTER_URI=:http://ros-master:11311    
+      - DISPLAY=:9
+    command:
+      - /bin/bash
+      - -c
+      - |
+        # source /opt/ros/humble/setup.bash &&
+        # colcon build --symlink-install && 
+        # source install/setup.bash &&
+        xterm -hold -T Terminal -e "tmux" 
