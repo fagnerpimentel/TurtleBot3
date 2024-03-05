@@ -16,7 +16,7 @@ services:
     # image: turtlebot3:latest
     build: 
       context: .
-      dockerfile: Dockerfile
+      dockerfile: dockerfile-pc
     ipc: host
     # volumes:
     #   - ./src:/turtlebot3_ws/src:rw

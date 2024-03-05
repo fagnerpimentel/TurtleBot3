@@ -1,8 +1,9 @@
+ARG DEBIAN_FRONTEND=noninteractive 
 ARG IMG=osrf/ros:humble-desktop-full
 # ARG IMG=arm64v8/ros:humble-ros-core
+
 FROM ${IMG}
 
-ARG DEBIAN_FRONTEND=noninteractive 
 ENV ROS_DISTRO=humble
 
 SHELL [ "/bin/bash" , "-c"]
@@ -16,8 +17,15 @@ RUN mkdir /turtlebot3_ws/src
 RUN cd /turtlebot3_ws/src && git clone -b humble-devel https://github.com/ROBOTIS-GIT/turtlebot3.git
 # RUN cd /turtlebot3_ws/src && git clone -b ros2-devel https://github.com/ROBOTIS-GIT/ld08_driver.git
 
-RUN apt install -y ros-${ROS_DISTRO}-gazebo-ros 
-RUN apt install -y ros-${ROS_DISTRO}-gazebo-ros-pkgs
+RUN if [ "$IMG" = "osrf/ros:humble-desktop-full" ]; then \
+        apt install -y ros-${ROS_DISTRO}-gazebo-ros; \
+        apt install -y ros-${ROS_DISTRO}-gazebo-ros-pkgs; \
+        apt install -y ros-${ROS_DISTRO}-turtlebot3-gazebo; \ 
+    # elif [ "$IMG" = "arm64v8/ros:humble-ros-core" ]; then \
+    else \
+        echo "No valid webserver specified"; \
+    fi
+
 RUN apt install -y ros-${ROS_DISTRO}-cartographer
 RUN apt install -y ros-${ROS_DISTRO}-cartographer-ros
 RUN apt install -y ros-${ROS_DISTRO}-navigation2
@@ -25,7 +33,6 @@ RUN apt install -y ros-${ROS_DISTRO}-nav2-bringup
 RUN apt install -y ros-${ROS_DISTRO}-dynamixel-sdk
 RUN apt install -y ros-${ROS_DISTRO}-turtlebot3-msgs
 RUN apt install -y ros-${ROS_DISTRO}-turtlebot3
-RUN apt install -y ros-${ROS_DISTRO}-turtlebot3-gazebo
 RUN apt install -y ros-${ROS_DISTRO}-hls-lfcd-lds-driver
 RUN apt install -y ros-${ROS_DISTRO}-dynamixel-sdk
 

@@ -11,5 +11,7 @@ network:
       dhcp4: yes
       dhcp6: yes
       access-points:
-        FEI-K404:
-          password: K$2812sD
+        # FEI-K404:
+          # password: K$2812sD
+        Fagner:
+          password: 123456
