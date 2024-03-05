@@ -1,5 +1,4 @@
 ARG IMG=osrf/ros:humble-desktop-full
-# ARG IMG=arm64v8/ros:humble-ros-core
 FROM ${IMG}
 
 ARG DEBIAN_FRONTEND=noninteractive 
@@ -9,13 +8,6 @@ SHELL [ "/bin/bash" , "-c"]
 
 RUN apt-get update
 RUN apt install -y xterm tmux git
-
-# cria e determina diretório da area de trabalho
-RUN mkdir /turtlebot3_ws
-RUN mkdir /turtlebot3_ws/src
-RUN cd /turtlebot3_ws/src && git clone -b humble-devel https://github.com/ROBOTIS-GIT/turtlebot3.git
-# RUN cd /turtlebot3_ws/src && git clone -b ros2-devel https://github.com/ROBOTIS-GIT/ld08_driver.git
-
 RUN apt install -y ros-${ROS_DISTRO}-gazebo-ros 
 RUN apt install -y ros-${ROS_DISTRO}-gazebo-ros-pkgs
 RUN apt install -y ros-${ROS_DISTRO}-cartographer
@@ -26,38 +18,10 @@ RUN apt install -y ros-${ROS_DISTRO}-dynamixel-sdk
 RUN apt install -y ros-${ROS_DISTRO}-turtlebot3-msgs
 RUN apt install -y ros-${ROS_DISTRO}-turtlebot3
 RUN apt install -y ros-${ROS_DISTRO}-turtlebot3-gazebo
-RUN apt install -y ros-${ROS_DISTRO}-hls-lfcd-lds-driver
-RUN apt install -y ros-${ROS_DISTRO}-dynamixel-sdk
 
-RUN apt install -y python3-argcomplete 
-RUN apt install -y python3-colcon-common-extensions 
-RUN apt install -y libboost-system-dev 
-RUN apt install -y build-essential
-RUN apt install -y libudev-dev
-# RUN cd /turtlebot3_ws/src/turtlebot3
-# RUN rm -r turtlebot3_cartographer turtlebot3_navigation2
-
-# RUN rm -R usr/src/gmock
-# RUN rm -R usr/src/gtest
-# RUN rm -R usr/share/urdfdom/
-# RUN cd /turtlebot3_ws/
-# RUN source /opt/ros/humble/setup.bash && colcon build --symlink-install --parallel-workers 1
-
-# RUN cd ~/turtlebot3_ws/
-# RUN echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc
-# RUN source ~/.bashrc
-# RUN colcon build --symlink-install --parallel-workers 1
-# RUN echo 'source ~/turtlebot3_ws/install/setup.bash' >> ~/.bashrc
-# RUN source ~/.bashrc
-
-# RUN echo 'export ROS_DOMAIN_ID=30 #TURTLEBOT3' >> ~/.bashrc
-# RUN source ~/.bashrc
-
-# RUN echo 'export LDS_MODEL=LDS-02' >> ~/.bashrc
-# RUN source ~/.bashrc
-
-# RUN echo 'TURTLEBOT3_MODEL=burger' >> ~/.bashrc
-# RUN source ~/.bashrc
+# cria e determina diretório da area de trabalho
+RUN mkdir /turtlebot3_ws
+WORKDIR /turtlebot3_ws
 
 # config tmux
 RUN echo "unbind -n Tab"                                                                    >> ~/.tmux.conf
@@ -72,5 +36,5 @@ RUN echo "bind-key -n C-Up select-pane -U"                                      
 RUN echo "bind-key -n C-Down select-pane -D"                                                >> ~/.tmux.conf
 RUN echo "bind -n M-Right split-window -h"                                                  >> ~/.tmux.conf
 RUN echo "bind -n M-Down split-window -v"                                                   >> ~/.tmux.conf
-
-WORKDIR /turtlebot3_ws
+RUN echo "bind C-c run 'tmux save-buffer - | xclip -i -sel clipboard'"                      >> ~/.tmux.conf
+RUN echo "bind C-v run 'tmux set-buffer '\$(xclip -o -sel clipboard)'; tmux paste-buffer'"   >> ~/.tmux.conf

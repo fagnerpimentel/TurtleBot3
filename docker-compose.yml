@@ -25,13 +25,16 @@ services:
     volumes_from:
       - xserver
     environment:  
-      - ROS_MASTER_URI=:http://ros-master:11311    
+      - ROS_MASTER_URI=http://ros-master:11311    
       - DISPLAY=:9
+      - ROS_DOMAIN_ID=30
+      - LDS_MODEL=LDS-02
+      - TURTLEBOT3_MODEL=burger
     command:
       - /bin/bash
       - -c
       - |
-        # source /opt/ros/humble/setup.bash &&
-        # colcon build --symlink-install && 
-        # source install/setup.bash &&
+        source /opt/ros/humble/setup.bash &&
+        colcon build --symlink-install && 
+        source install/setup.bash &&
         xterm -hold -T Terminal -e "tmux" 
