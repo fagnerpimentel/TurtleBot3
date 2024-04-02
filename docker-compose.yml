@@ -18,8 +18,8 @@ services:
       context: .
       dockerfile: dockerfile-pc
     ipc: host
-    # volumes:
-    #   - ./src:/turtlebot3_ws/src:rw
+    volumes:
+      - ./src:/turtlebot3_ws/src:rw
     depends_on:
       - xserver
     volumes_from:

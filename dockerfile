@@ -80,4 +80,7 @@ RUN echo "bind-key -n C-Down select-pane -D"                                    
 RUN echo "bind -n M-Right split-window -h"                                                  >> ~/.tmux.conf
 RUN echo "bind -n M-Down split-window -v"                                                   >> ~/.tmux.conf
 
+RUN apt install python-pip
+RUN pip install setuptools==58.2.0
+
 WORKDIR /turtlebot3_ws
