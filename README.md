@@ -1,5 +1,7 @@
 # TurtleBot3
 
+## [configurando Raspberry Pi](doc/config_rbp.md)
+
 ## build
 docker compose build
 docker compose up ros-master
@@ -34,3 +36,13 @@ entry_points={
             'binario = nome_do_pacote.nome_do_no:main'
         ],
     },
+
+
+
+
+## Fontes:
+Material adaptado de:
+- https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html
+- https://emanual.robotis.com/docs/en/platform/turtlebot3/overview/
+- https://github.com/ROBOTIS-GIT/turtlebot3.git
+- https://github.com/ROBOTIS-GIT/ld08_driver.git 
