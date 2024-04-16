@@ -5,7 +5,7 @@ ENV ROS_DISTRO=humble
 SHELL [ "/bin/bash" , "-c"]
 
 RUN apt-get update
-RUN apt install -y xterm tmux git
+RUN apt install -y xterm tmux git wget
 
 # cria e determina diretório da area de trabalho
 RUN mkdir /turtlebot3_ws
