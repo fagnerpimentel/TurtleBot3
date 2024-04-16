@@ -1,46 +1,46 @@
 # TurtleBot3
 
-## [configurando Raspberry Pi](doc/config_rbp.md)
+## inicializando o robô
 
-## build
-docker compose build
-docker compose up ros-master
+### Robô real:
+- [configurando Raspberry Pi](doc/config_rbp.md)
 
-## simulation
-ros2 launch turtlebot3_gazebo empty_world.launch.py
-ros2 launch turtlebot3_gazebo turtlebot3_house.launch.py
+### Robô simulado:
+- docker compose build
+- docker compose up ros-master
+- ros2 launch turtlebot3_gazebo empty_world.launch.py
+- ros2 launch turtlebot3_gazebo turtlebot3_house.launch.py
 
-## teleop
-ros2 run turtlebot3_teleop teleop_keyboard
+## Teleoperação
+- ros2 run turtlebot3_teleop teleop_keyboard
 
-## mapping
-ros2 launch turtlebot3_cartographer cartographer.launch.py
-ros2 run nav2_map_server map_saver_cli -f ~/map
+## Mapeamento
+- ros2 launch turtlebot3_cartographer cartographer.launch.py
+- ros2 run nav2_map_server map_saver_cli -f src/map
 
-## criando um pacote
-mkdir src
-cd src
-ros2 pkg create <nome_do_pacote> --build-type ament_python
+## Navegação
+- ros2 launch turtlebot3_navigation2 navigation2.launch.py map:=src/map.yaml
 
-## criando um no
+## Criando um pacote
+- mkdir src
+- cd src
+- ros2 pkg create <nome_do_pacote> --build-type ament_python
 
+## Criando um nó
 - crie um anquivo python
 - use o seguinte código:
-    robot.py
-
-
+    - robot.py
 - edite o arquivo setup.py:
 
+```python
 entry_points={
         'console_scripts': [
             'binario = nome_do_pacote.nome_do_no:main'
         ],
     },
+```
 
-
-
-
-## Fontes:
+# Fontes:
 Material adaptado de:
 - https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html
 - https://emanual.robotis.com/docs/en/platform/turtlebot3/overview/

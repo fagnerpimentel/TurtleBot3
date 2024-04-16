@@ -10,7 +10,6 @@ RUN apt install -y xterm tmux git
 # cria e determina diretório da area de trabalho
 RUN mkdir /turtlebot3_ws
 RUN mkdir /turtlebot3_ws/src
-# RUN cd /turtlebot3_ws/src && git clone -b humble-devel https://github.com/ROBOTIS-GIT/turtlebot3.git
 
 RUN apt install -y ros-${ROS_DISTRO}-gazebo-ros
 RUN apt install -y ros-${ROS_DISTRO}-gazebo-ros-pkgs
@@ -31,27 +30,8 @@ RUN apt install -y libboost-system-dev
 RUN apt install -y build-essential
 RUN apt install -y libudev-dev
 
-# RUN rm -R usr/src/gmock
-# RUN rm -R usr/src/gtest
-# RUN rm -R usr/share/urdfdom/
-# RUN cd /turtlebot3_ws/
-# RUN source /opt/ros/humble/setup.bash && colcon build --symlink-install --parallel-workers 1
-
-# RUN cd ~/turtlebot3_ws/
-# RUN echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc
-# RUN source ~/.bashrc
-# RUN colcon build --symlink-install --parallel-workers 1
-# RUN echo 'source ~/turtlebot3_ws/install/setup.bash' >> ~/.bashrc
-# RUN source ~/.bashrc
-
-# RUN echo 'export ROS_DOMAIN_ID=30 #TURTLEBOT3' >> ~/.bashrc
-# RUN source ~/.bashrc
-
-# RUN echo 'export LDS_MODEL=LDS-02' >> ~/.bashrc
-# RUN source ~/.bashrc
-
-# RUN echo 'TURTLEBOT3_MODEL=burger' >> ~/.bashrc
-# RUN source ~/.bashrc
+RUN wget https://raw.githubusercontent.com/ROBOTIS-GIT/turtlebot3/humble-devel/turtlebot3_navigation2/param/burger.yaml
+RUN mv burger.yaml /opt/ros/humble/share/turtlebot3_navigation2/param/
 
 # config tmux
 RUN echo "unbind -n Tab"                                                                    >> ~/.tmux.conf
