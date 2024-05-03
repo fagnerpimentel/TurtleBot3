@@ -33,6 +33,7 @@ cd ~/turtlebot3_ws/
 echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc
 source ~/.bashrc
 colcon build
+colcon build
 echo 'source '${PWD}'/install/setup.bash' >> ~/.bashrc
 source ~/.bashrc
 
