@@ -147,4 +147,18 @@
         ```
         </details>
 
+        <details>
+        <summary>Crie um arquivo de inicialização cahamado startup.sh</summary>
+
+        ```bash
+            #!/bin/bash
+            source /opt/ros/humble/setup.bash
+            source ~/turtlebot3_ws/install/setup.bash
+            export TURTLEBOT3_MODEL=burger
+            export LDS_MODEL=LDS-02
+            export ROS_DOMAIN_ID=30
+            ros2 launch turtlebot3_bringup robot.launch.py        
+        ```
+        </details>
+
 
