@@ -62,7 +62,6 @@
 
         ```bash 
         sudo apt update
-        sudo apt install 
         ```
 
         ```bash 
@@ -102,7 +101,8 @@
         sudo apt install -y ros-humble-turtlebot3-description
         ```
 
-        ```bash 
+        ```bash
+        source /opt/ros/humble/setup.bash 
         sudo cp `ros2 pkg prefix turtlebot3_bringup`/share/turtlebot3_bringup/script/99-turtlebot3-cdc.rules /etc/udev/rules.d/
         sudo udevadm control --reload-rules
         sudo udevadm trigger
@@ -166,6 +166,7 @@
         Execute o seguinte comando:
         ```bash
         export ROS_DOMAIN_ID=30 # alterar este valor dependendo do seu robô
+        export TURTLEBOT3_MODEL=burger
         source /opt/ros/humble/setup.bash 
         ros2 run turtlebot3_teleop teleop_keyboard 
         ```
