@@ -51,37 +51,32 @@
     - Acesse o Raspberry usando SSH
     - ```ssh <user>@<ip>```. Altere ```<user>``` para o usuario que voce configurou o Raspberry. Altere ```<ip>``` para o ip que voce configurou a rede do Raspberry. Será solicitado a senha que voce usou para configurar o Raspberry.
     - No terminal do Raspberry, execute os seguintes passos:
-        <details>
-        <summary>Clone este repositório e entre na pasta</summary>
-
-        ```bash
-        git clone https://github.com/fagnerpimentel/TurtleBot3.git
-        cd TurtleBot3
-        ```
-
-        </details>
-
 
         <details>
         <summary>Configure os pacotes de instalação</summary>
         
         ```bash 
-            systemctl mask systemd-networkd-wait-online.service
-            sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
-
-            sudo apt update
-            sudo apt install 
-
-            sudo apt install software-properties-common
-            sudo add-apt-repository universe -y
-            sudo apt update && sudo apt install curl -y
-            sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-            echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
-
-            reboot
-
+        systemctl mask systemd-networkd-wait-online.service
+        sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
         ```
-        - No final deste processo o raspberry irá reiniciar.
+
+        ```bash 
+        sudo apt update
+        sudo apt install 
+        ```
+
+        ```bash 
+        sudo apt install software-properties-common
+        sudo add-apt-repository universe -y
+        sudo apt update && sudo apt install curl -y
+        sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+        ```
+
+        ```bash 
+        sudo reboot
+        ```
+        - No final deste processo a raspberry irá reiniciar.
 
         </details>
 
@@ -89,61 +84,41 @@
         <summary>Instale os pacotes necessários</summary>
         
         ```bash 
-            sudo apt install -y libudev-dev
-            sudo apt install -y python3-argcomplete 
-            sudo apt install -y python3-colcon-common-extensions 
-            sudo apt install -y libboost-system-dev build-essential
+        sudo apt install -y libudev-dev
+        sudo apt install -y python3-argcomplete 
+        sudo apt install -y python3-colcon-common-extensions 
+        sudo apt install -y libboost-system-dev build-essential
 
-            sudo apt install -y ros-dev-tools
-            sudo apt install -y ros-humble-ros-base
+        sudo apt install -y ros-dev-tools
+        sudo apt install -y ros-humble-ros-base
 
-            sudo apt install -y ros-humble-dynamixel-sdk
-            sudo apt install -y ros-humble-hls-lfcd-lds-driver
+        sudo apt install -y ros-humble-dynamixel-sdk
+        sudo apt install -y ros-humble-hls-lfcd-lds-driver
 
-            sudo apt install -y ros-humble-turtlebot3-msgs
-            sudo apt install -y ros-humble-turtlebot3-node
-            sudo apt install -y ros-humble-turtlebot3-teleop
-            sudo apt install -y ros-humble-turtlebot3-bringup
-            sudo apt install -y ros-humble-turtlebot3-description
-            
-            echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc
-            source ~/.bashrc
-
-            sudo cp `ros2 pkg prefix turtlebot3_bringup`/share/turtlebot3_bringup/script/99-turtlebot3-cdc.rules /etc/udev/rules.d/
-            sudo udevadm control --reload-rules
-            sudo udevadm trigger
-
-            echo 'export TURTLEBOT3_MODEL=burger' >> ~/.bashrc
-            echo 'export LDS_MODEL=LDS-02' >> ~/.bashrc
-            source ~/.bashrc
+        sudo apt install -y ros-humble-turtlebot3-msgs
+        sudo apt install -y ros-humble-turtlebot3-node
+        sudo apt install -y ros-humble-turtlebot3-teleop
+        sudo apt install -y ros-humble-turtlebot3-bringup
+        sudo apt install -y ros-humble-turtlebot3-description
         ```
-        </details>
 
-
-        <details>
-        <summary>Configure o ROS_DOMAIN_ID do seu robô</summary>
-        
-        ```bash
-            echo 'export ROS_DOMAIN_ID=30 #TURTLEBOT3' >> ~/.bashrc
-            source ~/.bashrc
+        ```bash 
+        sudo cp `ros2 pkg prefix turtlebot3_bringup`/share/turtlebot3_bringup/script/99-turtlebot3-cdc.rules /etc/udev/rules.d/
+        sudo udevadm control --reload-rules
+        sudo udevadm trigger
         ```
-        - Esse ID precisa ser único para cada robô na rede.
-        - O valor padrão é 30. Use outros valores caso você tenha mais robôs na mesma rede.
 
         </details>
-
 
         <details>
         <summary>Instale o driver do laser</summary>
 
         ```bash 
-            mkdir -p ~/turtlebot3_ws/src && cd ~/turtlebot3_ws/src
-            git clone -b ros2-devel https://github.com/ROBOTIS-GIT/ld08_driver.git
-            cd ~/turtlebot3_ws/
-            colcon build
-            colcon build
-            echo 'source '${PWD}'/install/setup.bash' >> ~/.bashrc
-            source ~/.bashrc
+        mkdir -p ~/turtlebot3_ws/src && cd ~/turtlebot3_ws/src
+        git clone -b ros2-devel https://github.com/ROBOTIS-GIT/ld08_driver.git
+        cd ~/turtlebot3_ws/
+        colcon build
+        colcon build
         ```
         </details>
 
@@ -151,12 +126,49 @@
         <summary>Crie um arquivo de inicialização cahamado startup.sh</summary>
 
         ```bash
-            #!/bin/bash
-            source /opt/ros/humble/setup.bash
-            source ~/turtlebot3_ws/install/setup.bash
-            export TURTLEBOT3_MODEL=burger
-            export LDS_MODEL=LDS-02
-            export ROS_DOMAIN_ID=30
-            ros2 launch turtlebot3_bringup robot.launch.py        
+        #!/bin/bash
+        source /opt/ros/humble/setup.bash
+        source ~/turtlebot3_ws/install/setup.bash
+        export TURTLEBOT3_MODEL=burger
+        export LDS_MODEL=LDS-02
+        export ROS_DOMAIN_ID=30
+        ros2 launch turtlebot3_bringup robot.launch.py        
+        ```
+ 
+        - O ROS_DOAMIN_ID precisa ser único para cada robô na rede.
+        - O valor padrão é 30. Use outros valores caso você tenha mais robôs na mesma rede.
+        
+        </details>
+
+        <details>
+        <summary>Adicione o startup.sh ao crontab para ser inicializado quando o robô ligar</summary>
+
+        Execute o seguinte comando:
+        ```bash
+        crontab -e
+        ```
+ 
+        Adicione este comando na última linha.
+        ```bash
+        @reboot bash $HOME/startup.sh > $HOME/log.txt 2>&1        
+        ```
+
+        Reinicie o robô e ele estará pronto.
+        ```bash
+        sudo reboot
         ```
         </details>
+
+
+        <details>
+        <summary>Controle o seu robô remotamente.</summary>
+
+        Execute o seguinte comando:
+        ```bash
+        export ROS_DOMAIN_ID=30 # alterar este valor dependendo do seu robô
+        source /opt/ros/humble/setup.bash 
+        ros2 run turtlebot3_teleop teleop_keyboard 
+        ```
+   
+       - Siga as instruções no terminal para controlar o robô.
+     
